@@ -2,16 +2,17 @@
   "name": "ygg-notification",
   "version": "1.0.0",
   "description": "",
-  "main": "main.ts",
+  "main": "src/main.ts",
   "scripts": {
     "build": "npx tsc",
-    "dev": "nodemon main.ts",
+    "dev": "nodemon src/main.ts",
     "start": "node dist/main.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-schedule": "^2.1.1",
     "yggtorrent-api": "^1.0.4"
   },
   "devDependencies": {
