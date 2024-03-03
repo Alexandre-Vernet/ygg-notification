@@ -11,7 +11,7 @@ const getMovies = async () => {
         movies.push(...Object.values(doc.data()));
     });
 
-    return movies;
+    return movies.sort((a, b) => a.name.localeCompare(b.name));
 };
 
 
