@@ -1,6 +1,6 @@
 import express from "express";
 import { Movie } from "../interfaces/Movie";
-import { addMovie, getMovies } from "../services/MovieService";
+import { addMovie, deleteMovie, getMovies } from "../services/MovieService";
 const movie = express.Router();
 
 
@@ -20,6 +20,19 @@ movie.post("/", async (req, res) => {
 
     addMovie(movie)
         .then(() => {
+            res.send(movie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send(err);
+        });
+});
+
+movie.delete("/:id", async (req, res) => {
+    const movieId = req.params.id;
+
+    deleteMovie(movieId)
+        .then((movie) => {
             res.send(movie);
         })
         .catch((err) => {

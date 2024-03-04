@@ -1,5 +1,5 @@
 import { Movie } from "../interfaces/Movie";
-import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
+import { collection, deleteField, doc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 import db from "../conf/firebase";
 
 const q = query(collection(db, "movies"));
@@ -8,7 +8,13 @@ const getMovies = async () => {
     const movies: Movie[] = [];
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        movies.push(...Object.values(doc.data()));
+        Object.entries(doc.data()).forEach(([key, movie]) => {
+            movies.push({
+                id: key,
+                ...movie
+            });
+        });
+
     });
 
     return movies.sort((a, b) => a.name.localeCompare(b.name));
@@ -22,6 +28,16 @@ const addMovie = async (movie: Movie) => {
     await setDoc(doc(db, "movies", "oM9AihvsiOLx3Or3gnzk"), {
         [id]: movie
     }, { merge: true });
+
+    return movie;
 }
 
-export { getMovies, addMovie };
+const deleteMovie = async (movieId: string) => {
+    const movieRef = doc(db, 'movies', 'oM9AihvsiOLx3Or3gnzk');
+
+    await updateDoc(movieRef, {
+        [movieId]: deleteField()
+    });
+}
+
+export { getMovies, addMovie, deleteMovie };
